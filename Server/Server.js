@@ -1,15 +1,34 @@
+
+
 const express = require('express')
 const app = express()
-const path  = require('path')
+const tasks = require('./routes/tasks')
+const connectDB = require('./db/connect')
+const path = require('path')
 
-app.use(express.static(path.join(__dirname,'../Frontend/dist')))
+app.use(express.static('../Frontend/dist'))
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
-app.post('/submit',(req,res)=>{
-    console.log(req.body)
-    res.json({'message':req.body.task})
+app.use('/api/v1/tasks',tasks)
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,'../Frontend/dist/index.html'))
 })
 
-app.listen(5002,(req,res)=>{
-    console.log('Server is listening port 5002')
-})
+require('dotenv').config()
+
+const start = async()=>{
+
+    try{
+    await connectDB(process.env.MONGO_URL)
+    app.listen(5000,(req,res)=>{
+        console.log('The app is listening to server 5000')
+    })
+}
+catch(error){
+    console.log(error)
+}
+    
+}
+
+start()
+
