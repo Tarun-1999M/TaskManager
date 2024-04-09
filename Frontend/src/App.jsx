@@ -64,7 +64,7 @@ function App() {
         <button type="submit" className='border-2 border-black p-1 bg-violet-600 rounded-sm text-white'>Submit</button>
       </form>
       <div className="text-2xl font-bold underline">TASKS</div>
-      {tasks && <DisplayCard tasks={tasks}/>}
+      {tasks && tasks.length>0?  <DisplayCard tasks={tasks}/> : <div className="text-2xl">No Tasks to show</div>}
     </div>
   );
 }

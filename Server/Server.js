@@ -5,11 +5,13 @@ const app = express()
 const tasks = require('./routes/tasks')
 const connectDB = require('./db/connect')
 const path = require('path')
+const errorHandler = require('./ErrorHandler')
 
 app.use(express.static('../Frontend/dist'))
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use('/api/v1/tasks',tasks)
+app.use(errorHandler)
 app.get("*",(req,res)=>{
     res.sendFile(path.join(__dirname,'../Frontend/dist/index.html'))
 })

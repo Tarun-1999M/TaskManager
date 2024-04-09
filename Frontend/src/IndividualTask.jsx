@@ -1,10 +1,11 @@
 import React, { useEffect,useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams,Navigate } from 'react-router-dom'
 import DisplayMessage from './components/DisplayMessage'
 const IndividualTask = () => {
    const [formData,setFormData] = useState({name:"",completed:false})
    const [message,setMessage] = useState("")
    const {id} = useParams()
+   const [isValid,setIsValid] = useState(true)
    const url = `/api/v1/tasks/${id}`;
 
    useEffect(()=>{
@@ -24,7 +25,9 @@ const IndividualTask = () => {
                     alert('Cannot find the selected Task')
                 }
                 else if(res.status===500){
-                    alert('Server Error,Please try after some time',msg)
+                    console.log('Error in fetching the data')
+                     setIsValid(false);
+                    
                 }
             }
     
@@ -38,6 +41,9 @@ const IndividualTask = () => {
    },[])
    
 
+   if(!isValid){
+    return <Navigate to="/not-found" replace/>
+   }
    async function handleSubmit(e){
     e.preventDefault()
     const url=`/api/v1/tasks/${id}`
